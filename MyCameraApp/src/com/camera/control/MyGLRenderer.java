@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.test.activity;
+package com.camera.control;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -24,6 +24,8 @@ import java.util.List;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
+
+import com.camera.model.Triangle;
 
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;

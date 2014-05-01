@@ -1,4 +1,4 @@
-package com.test.activity;
+package com.camera.activity;
 
 import java.io.File;
 import java.util.ArrayList;

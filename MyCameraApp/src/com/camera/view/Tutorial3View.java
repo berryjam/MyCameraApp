@@ -1,4 +1,4 @@
-package com.test.activity;
+package com.camera.view;
 
 import java.io.FileOutputStream;
 import java.util.List;

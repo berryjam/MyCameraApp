@@ -1,4 +1,4 @@
-package com.test.activity;
+package com.camera.control;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

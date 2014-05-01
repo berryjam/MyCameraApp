@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.test.activity;
+package com.camera.model;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+
+import com.camera.control.MyGLRenderer;
 
 import android.opengl.GLES20;
 

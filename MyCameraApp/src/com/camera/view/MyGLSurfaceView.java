@@ -13,7 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.test.activity;
+package com.camera.view;
+
+import com.camera.control.LessonTwoRenderer;
+import com.camera.control.MyGLRenderer;
 
 import android.content.Context;
 import android.graphics.PixelFormat;

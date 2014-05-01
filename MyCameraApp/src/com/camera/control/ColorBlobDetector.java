@@ -1,4 +1,4 @@
-package com.test.activity;
+package com.camera.control;
 
 import java.util.ArrayList;
 import java.util.Iterator;

@@ -1,4 +1,4 @@
-package com.test.activity;
+package com.camera.activity;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -40,6 +40,8 @@ import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.camera.control.ColorBlobDetector;
+import com.camera.view.Tutorial3View;
 import com.example.test.R;
 
 public class ColorBlobDetectionActivity extends Activity implements

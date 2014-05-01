@@ -12,7 +12,7 @@
         android:layout_weight="8"
         android:orientation="horizontal" >
 
-        <com.test.activity.MyGLSurfaceView
+        <com.camera.view.MyGLSurfaceView
             android:id="@+id/view3d"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />

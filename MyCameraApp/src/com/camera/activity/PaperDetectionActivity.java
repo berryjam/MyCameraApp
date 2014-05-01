@@ -1,4 +1,4 @@
-package com.test.activity;
+package com.camera.activity;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -17,6 +17,7 @@ import org.opencv.core.Scalar;
 import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
 
+import com.camera.view.Tutorial3View;
 import com.example.test.R;
 
 import android.annotation.SuppressLint;
