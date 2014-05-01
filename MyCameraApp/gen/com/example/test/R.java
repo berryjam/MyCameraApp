@@ -65,6 +65,7 @@ containing a value of this type.
         public static final int action_settings=0x7f040014;
         public static final int any=0x7f040000;
         public static final int back=0x7f040001;
+        public static final int background=0x7f04000b;
         public static final int camer=0x7f04000d;
         public static final int color_blob_detection_activity_surface_view=0x7f040004;
         public static final int container=0x7f040003;
@@ -78,7 +79,6 @@ containing a value of this type.
         public static final int mygallery=0x7f040007;
         public static final int rotate=0x7f040011;
         public static final int scale=0x7f040012;
-        public static final int selected_picture=0x7f04000b;
         public static final int switcher=0x7f040006;
         public static final int three_diemension=0x7f040013;
         public static final int translate=0x7f040010;

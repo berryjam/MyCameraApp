@@ -5,12 +5,11 @@
     android:layout_height="match_parent"
     android:orientation="horizontal" >
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/mainView"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:layout_weight="8"
-        android:orientation="horizontal" >
+        android:layout_weight="8" >
 
         <com.camera.view.MyGLSurfaceView
             android:id="@+id/view3d"
@@ -18,10 +17,11 @@
             android:layout_height="fill_parent" />
 
         <ImageView
-            android:id="@+id/selected_picture"
+            android:id="@+id/background"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
-    </LinearLayout>
+            android:layout_height="fill_parent"
+            android:src="@drawable/ic_launcher" />
+    </RelativeLayout>
 
     <View
         android:layout_width="1dip"

@@ -15,15 +15,14 @@
  */
 package com.camera.view;
 
-import com.camera.control.LessonTwoRenderer;
-import com.camera.control.MyGLRenderer;
-
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
 import android.os.Environment;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+
+import com.camera.control.MyGLRenderer;
 
 /**
  * A view container where OpenGL ES graphics can be drawn on screen. This view
@@ -33,7 +32,6 @@ import android.view.MotionEvent;
 public class MyGLSurfaceView extends GLSurfaceView {
 
 	private final MyGLRenderer mRenderer;
-	private final LessonTwoRenderer renderer;
 
 	public MyGLSurfaceView(Context context) {
 		super(context);
@@ -43,6 +41,8 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
 		setZOrderOnTop(true);
 
+		setEGLConfigChooser(8, 8, 8, 8, 16, 0);
+
 		getHolder().setFormat(PixelFormat.TRANSLUCENT);
 
 		// Set the Renderer for drawing on the GLSurfaceView
@@ -51,7 +51,6 @@ public class MyGLSurfaceView extends GLSurfaceView {
 				.toString() + "/Pictures/MyCameraApp/heartcenter.stl");
 
 		setRenderer(mRenderer);
-		renderer = new LessonTwoRenderer();
 		// setRenderer(renderer);
 
 		// Render the view only when there is a change in the drawing data
@@ -66,6 +65,8 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
 		setZOrderOnTop(true);
 
+		setEGLConfigChooser(8, 8, 8, 8, 16, 0);
+
 		getHolder().setFormat(PixelFormat.TRANSLUCENT);
 
 		// Set the Renderer for drawing on the GLSurfaceView
@@ -74,7 +75,6 @@ public class MyGLSurfaceView extends GLSurfaceView {
 				.toString() + "/Pictures/MyCameraApp/heartcenter.stl");
 
 		setRenderer(mRenderer);
-		renderer = new LessonTwoRenderer();
 		// setRenderer(renderer);
 
 		// Render the view only when there is a change in the drawing data

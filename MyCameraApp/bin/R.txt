@@ -16,6 +16,7 @@ int drawable ic_launcher 0x7f020009
 int id action_settings 0x7f040014
 int id any 0x7f040000
 int id back 0x7f040001
+int id background 0x7f04000b
 int id camer 0x7f04000d
 int id color_blob_detection_activity_surface_view 0x7f040004
 int id container 0x7f040003
@@ -29,7 +30,6 @@ int id mainView 0x7f040009
 int id mygallery 0x7f040007
 int id rotate 0x7f040011
 int id scale 0x7f040012
-int id selected_picture 0x7f04000b
 int id switcher 0x7f040006
 int id three_diemension 0x7f040013
 int id translate 0x7f040010

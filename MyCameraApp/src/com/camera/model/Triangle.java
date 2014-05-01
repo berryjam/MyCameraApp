@@ -19,9 +19,9 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
-import com.camera.control.MyGLRenderer;
-
 import android.opengl.GLES20;
+
+import com.camera.control.MyGLRenderer;
 
 /**
  * A two-dimensional triangle for use as a drawn object in OpenGL ES 2.0.
@@ -59,23 +59,23 @@ public class Triangle {
 	private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per
 															// vertex
 
-	private float color[];
+	float color[] = { 0.63671875f, 0.76953125f, 0.22265625f, 0.0f };
 
 	/**
 	 * Sets up the drawing object data for use in an OpenGL ES context.
 	 */
-	public Triangle(float[] coords) {
+	public Triangle() {
 		// initialize vertex byte buffer for shape coordinates
 		ByteBuffer bb = ByteBuffer.allocateDirect(
 		// (number of coordinate values * 4 bytes per float)
-				coords.length * 4);
+				triangleCoords.length * 4);
 		// use the device hardware's native byte order
 		bb.order(ByteOrder.nativeOrder());
 
 		// create a floating point buffer from the ByteBuffer
 		vertexBuffer = bb.asFloatBuffer();
 		// add the coordinates to the FloatBuffer
-		vertexBuffer.put(coords);
+		vertexBuffer.put(triangleCoords);
 		// set the buffer to read the first coordinate
 		vertexBuffer.position(0);
 
@@ -92,6 +92,35 @@ public class Triangle {
 															// shader to program
 		GLES20.glLinkProgram(mProgram); // create OpenGL program executables
 
+	}
+
+	public Triangle(float[] vertexs) {
+		// initialize vertex byte buffer for shape coordinates
+		ByteBuffer bb = ByteBuffer.allocateDirect(
+		// (number of coordinate values * 4 bytes per float)
+				vertexs.length * 4);
+		// use the device hardware's native byte order
+		bb.order(ByteOrder.nativeOrder());
+
+		// create a floating point buffer from the ByteBuffer
+		vertexBuffer = bb.asFloatBuffer();
+		// add the coordinates to the FloatBuffer
+		vertexBuffer.put(vertexs);
+		// set the buffer to read the first coordinate
+		vertexBuffer.position(0);
+
+		// prepare shaders and OpenGL program
+		int vertexShader = MyGLRenderer.loadShader(GLES20.GL_VERTEX_SHADER,
+				vertexShaderCode);
+		int fragmentShader = MyGLRenderer.loadShader(GLES20.GL_FRAGMENT_SHADER,
+				fragmentShaderCode);
+
+		mProgram = GLES20.glCreateProgram(); // create empty OpenGL Program
+		GLES20.glAttachShader(mProgram, vertexShader); // add the vertex shader
+														// to program
+		GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment
+															// shader to program
+		GLES20.glLinkProgram(mProgram); // create OpenGL program executables
 	}
 
 	/**
@@ -135,7 +164,4 @@ public class Triangle {
 		GLES20.glDisableVertexAttribArray(mPositionHandle);
 	}
 
-	public void setColor(float[] c) {
-		color = c;
-	}
 }

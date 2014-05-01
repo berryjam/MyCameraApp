@@ -25,12 +25,12 @@ import java.util.List;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import com.camera.model.Triangle;
-
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.util.Log;
+
+import com.camera.model.Triangle;
 
 /**
  * Provides drawing instructions for a GLSurfaceView object. This class must
@@ -54,26 +54,16 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 	private final float[] mViewMatrix = new float[16];
 	private final float[] mRotationMatrix = new float[16];
 
-	// 由包围盒计算得到放缩矩阵
-	private float[] scaleMatrix = new float[16];
-
 	private float mAngle;
 	private String modelPath;
 
-	private float minX;
-	private float maxX;
-	private float minY;
-	private float maxY;
-	private float minZ;
-	private float maxZ;
+	private float minX = Float.MAX_VALUE;
+	private float maxX = Float.MIN_VALUE;
+	private float minY = Float.MAX_VALUE;
+	private float maxY = Float.MIN_VALUE;
+	private float minZ = Float.MAX_VALUE;
+	private float maxZ = Float.MIN_VALUE;
 	private boolean initialized = false;
-
-	private float color1[] = { 1.0f, 0.0f, 0.0f, 1.0f, };
-	private float color2[] = { 0.0f, 1.0f, 0.0f, 1.0f, };
-	private float color3[] = { 0.0f, 0.0f, 1.0f, 1.0f, };
-	private float color4[] = { 1.0f, 1.0f, 0.0f, 1.0f, };
-	private float color5[] = { 0.0f, 1.0f, 1.0f, 1.0f, };
-	private float color6[] = { 1.0f, 0.0f, 1.0f, 1.0f, };
 
 	@Override
 	public void onSurfaceCreated(GL10 unused, EGLConfig config) {
@@ -85,7 +75,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 		// mSquare = new Square();
 
 		try {
-			parseSTL();
+			parse();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -102,25 +92,23 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 		// Draw background color
 		GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
-		// Set the camera position (View matrix)
 		int rmOffset = 0;
 		float eyeX = 3;
 		float eyeY = 3;
-		float eyeZ = 3;
+		float eyeZ = -3;
 		float centerX = 0;
 		float centerY = 0;
 		float centerZ = 0;
 		float upX = 0;
 		float upY = 1;
 		float upZ = 0;
+		// Set the camera position (View matrix)
 		Matrix.setLookAtM(mViewMatrix, rmOffset, eyeX, eyeY, eyeZ, centerX,
 				centerY, centerZ, upX, upY, upZ);
 
 		// Calculate the projection and view transformation
 		Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
-		calculateScaleMatrix();
-		float[] scratchTmp = new float[16];
-		Matrix.multiplyMM(scratchTmp, 0, scaleMatrix, 0, mMVPMatrix, 0);
+
 		// Draw square
 		// mSquare.draw(mMVPMatrix);
 
@@ -131,37 +119,19 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 		// long time = SystemClock.uptimeMillis() % 4000L;
 		// float angle = 0.090f * ((int) time);
 
-		// long time = SystemClock.uptimeMillis() % 10000L;
-		// float angleInDegrees = (360.0f / 10000.0f) * ((int) time);
-		// mAngle = angleInDegrees;
 		Matrix.setRotateM(mRotationMatrix, 0, mAngle, 0, 0, 1.0f);
 
 		// Combine the rotation matrix with the projection and camera view
 		// Note that the mMVPMatrix factor *must be first* in order
 		// for the matrix multiplication product to be correct.
-		Matrix.multiplyMM(scratch, 0, scratchTmp, 0, mRotationMatrix, 0);
+		Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mRotationMatrix, 0);
 
 		// Draw triangle
 		// mTriangle.draw(scratch);
 
 		// Draw triangles
-		int tmp = 0;
-		for (Triangle triangle : triangles) {
-			tmp = (tmp + 1) % 12;
-			if (tmp == 1 || tmp == 2)
-				triangle.setColor(color1);
-			if (tmp == 3 || tmp == 4)
-				triangle.setColor(color2);
-			if (tmp == 5 || tmp == 6)
-				triangle.setColor(color3);
-			if (tmp == 7 || tmp == 8)
-				triangle.setColor(color4);
-			if (tmp == 9 || tmp == 10)
-				triangle.setColor(color5);
-			if (tmp == 11 || tmp == 0)
-				triangle.setColor(color6);
+		for (Triangle triangle : triangles)
 			triangle.draw(scratch);
-		}
 	}
 
 	@Override
@@ -247,31 +217,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 		modelPath = path;
 	}
 
-	private void calculateScaleMatrix() {
-		float tmpX = Math.abs(maxX) > Math.abs(minX) ? Math.abs(maxX) : Math
-				.abs(minX);
-		float tmpY = Math.abs(maxY) > Math.abs(minY) ? Math.abs(maxY) : Math
-				.abs(minY);
-		float tmpZ = Math.abs(maxZ) > Math.abs(minZ) ? Math.abs(maxZ) : Math
-				.abs(minZ);
-		float tmp = tmpX;
-		if (tmpY > tmp)
-			tmp = tmpY;
-		if (tmpZ > tmp)
-			tmp = tmpZ;
-		float sx = 1;
-		float sy = 1;
-		float sz = 1;
-		if (tmp > 1) {
-			sx = 1 / tmp;
-			sy = 1 / tmp;
-			sz = 1 / tmp;
-		}
-		scaleMatrix = new float[] { sx, 0, 0, 0, 0, sy, 0, 0, 0, 0, sz, 0, 0,
-				0, 0, 1 };
-	}
-
-	private void parseSTL() throws IOException, Exception {
+	private void parse() throws IOException, Exception {
 		triangles = new ArrayList<Triangle>();
 
 		File file = new File(modelPath);
@@ -284,64 +230,51 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 		Triangle triangle = null;
 
 		int count = 0;
-		float current;
+		float currentVal;
 		while ((line = input.readLine().trim()) != null) {
 			if (line.startsWith("solid"))
 				continue;
 			if (line.startsWith("facet")) {
 				// TODO 处理法向量信息 line: facet normal
-				String[] normalCoords = line.trim().split(" ");
-				float[] normal = new float[3];
-				normal[0] = Float.parseFloat(normalCoords[2]);
-				normal[1] = Float.parseFloat(normalCoords[3]);
-				normal[2] = Float.parseFloat(normalCoords[4]);
 				line = input.readLine();// line:outer loop (skip)
 				// 开始解析三角形顶点坐标
 				float[] coords = new float[9];
 				while ((line = input.readLine().trim()).startsWith("vertex")) {
 					String[] vertex = line.split(" ");
 					for (int i = count, j = 1; i < count + 3; ++i, ++j) {
-						current = Float.parseFloat(vertex[j]);
+						currentVal = Float.parseFloat(vertex[j]);
+						coords[i] = currentVal;
 						if (!initialized) {
-							coords[i] = current;
 							if (j % 3 == 1) {
-								minX = current;
-								maxX = current;
+								minX = currentVal;
+								maxX = currentVal;
 							}
 							if (j % 3 == 2) {
-								minY = current;
-								maxY = current;
+								minY = currentVal;
+								maxY = currentVal;
 							}
 							if (j % 3 == 0) {
-								minZ = current;
-								maxZ = current;
+								minZ = currentVal;
+								maxZ = currentVal;
 							}
-							initialized = true;
 						} else {
-							coords[i] = current;
 							if (j % 3 == 1) {
-								if (minX > current) {
-									minX = current;
-								}
-								if (maxX < current) {
-									maxX = current;
-								}
+								if (minX > currentVal)
+									minX = currentVal;
+								if (maxX < currentVal)
+									maxX = currentVal;
 							}
 							if (j % 3 == 2) {
-								if (minY > current) {
-									minY = current;
-								}
-								if (maxY < current) {
-									maxY = current;
-								}
+								if (minY > currentVal)
+									minY = currentVal;
+								if (maxY < currentVal)
+									maxY = currentVal;
 							}
 							if (j % 3 == 0) {
-								if (minZ > current) {
-									minZ = current;
-								}
-								if (maxZ < current) {
-									maxZ = current;
-								}
+								if (minZ > currentVal)
+									minZ = currentVal;
+								if (maxZ < currentVal)
+									maxZ = currentVal;
 							}
 						}
 					}

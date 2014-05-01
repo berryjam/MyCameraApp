@@ -30,6 +30,15 @@ public class MainActivity extends Activity {
 	private static final int IMAGE_SWITCHER_ACTIVITY_REQUEST_CODE = 300;
 	private Uri fileUri;
 
+	private ImageView camer;
+	private ImageView file;
+	private ImageView loadModel;
+	private ImageView translate;
+	private ImageView rotate;
+	private ImageView scale;
+	private ImageView threeDiemension;
+	private ImageView background;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -37,7 +46,7 @@ public class MainActivity extends Activity {
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.main_layout);
-		ImageView camer = (ImageView) findViewById(R.id.camer);
+		camer = (ImageView) findViewById(R.id.camer);
 		camer.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -61,7 +70,7 @@ public class MainActivity extends Activity {
 			}
 		});
 
-		ImageView file = (ImageView) findViewById(R.id.file);
+		file = (ImageView) findViewById(R.id.file);
 		file.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -73,7 +82,7 @@ public class MainActivity extends Activity {
 			}
 		});
 
-		ImageView loadModel = (ImageView) findViewById(R.id.load_model);
+		loadModel = (ImageView) findViewById(R.id.load_model);
 		loadModel.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -85,7 +94,7 @@ public class MainActivity extends Activity {
 			}
 		});
 
-		ImageView translate = (ImageView) findViewById(R.id.translate);
+		translate = (ImageView) findViewById(R.id.translate);
 		translate.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -95,7 +104,7 @@ public class MainActivity extends Activity {
 			}
 		});
 
-		ImageView rotate = (ImageView) findViewById(R.id.rotate);
+		rotate = (ImageView) findViewById(R.id.rotate);
 		rotate.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -105,7 +114,7 @@ public class MainActivity extends Activity {
 			}
 		});
 
-		ImageView scale = (ImageView) findViewById(R.id.scale);
+		scale = (ImageView) findViewById(R.id.scale);
 		scale.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -115,7 +124,7 @@ public class MainActivity extends Activity {
 			}
 		});
 
-		ImageView threeDiemension = (ImageView) findViewById(R.id.three_diemension);
+		threeDiemension = (ImageView) findViewById(R.id.three_diemension);
 		threeDiemension.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -124,6 +133,7 @@ public class MainActivity extends Activity {
 
 			}
 		});
+		background = (ImageView) findViewById(R.id.background);
 	}
 
 	private static Uri getOutputMediaFileUri(int type) {
@@ -190,13 +200,12 @@ public class MainActivity extends Activity {
 				String imagePath = data
 						.getStringExtra(ImageSwitcherAndGalleryActivity.SELECTED_PICTURE_PATH);
 				Log.v("MainActivity", imagePath);
-				ImageView i = (ImageView) findViewById(R.id.selected_picture);
 				Bitmap bm = BitmapFactory.decodeFile(imagePath);
-				i.setImageBitmap(bm);
-				i.setLayoutParams(new LinearLayout.LayoutParams(
+				background.setImageBitmap(bm);
+				background.setLayoutParams(new LinearLayout.LayoutParams(
 						LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 				// Toast.makeText(this, imagePath, Toast.LENGTH_LONG).show();
-				i.invalidate();
+				background.invalidate();
 			}
 		}
 	}
