@@ -18,7 +18,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.example.test.R;
 
@@ -87,7 +87,7 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
-				// TODO 加载模型
+				// FIXME 加载模型，而不是hard-code
 				Intent intent = new Intent(MainActivity.this,
 						OpenGLES20Activity.class);
 				startActivity(intent);
@@ -140,7 +140,7 @@ public class MainActivity extends Activity {
 		return Uri.fromFile(getOutputMediaFile(type));
 	}
 
-	private static File getOutputMediaFile(int type) {
+	private static File getOutputMediaFile(int type) { 
 		File mediaStorageDir = new File(
 				Environment
 						.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
@@ -202,7 +202,7 @@ public class MainActivity extends Activity {
 				Log.v("MainActivity", imagePath);
 				Bitmap bm = BitmapFactory.decodeFile(imagePath);
 				background.setImageBitmap(bm);
-				background.setLayoutParams(new LinearLayout.LayoutParams(
+				background.setLayoutParams(new RelativeLayout.LayoutParams(
 						LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 				// Toast.makeText(this, imagePath, Toast.LENGTH_LONG).show();
 				background.invalidate();

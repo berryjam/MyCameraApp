@@ -288,4 +288,37 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 		}
 		input.close();
 	}
+
+	private float[] getScaleMatrix() {
+		float[] scaleMatrix;
+		float sx = 1.0f, sy = 1.0f, sz = 1.0f;
+		// TODO º∆À„
+		float absX = Math.abs(minX) > Math.abs(maxX) ? Math.abs(minX) : Math
+				.abs(maxX);
+		float absY = Math.abs(minY) > Math.abs(maxY) ? Math.abs(minY) : Math
+				.abs(maxY);
+		float absZ = Math.abs(minZ) > Math.abs(maxZ) ? Math.abs(minZ) : Math
+				.abs(maxZ);
+		float abs = absX;
+		if (absY > abs)
+			abs = absY;
+		if (absZ > abs)
+			abs = absZ;
+		if (abs > 1) {
+			float ratio = 1 / abs;
+			sx = ratio;
+			sy = ratio;
+			sz = ratio;
+		}
+		scaleMatrix = new float[] {// 4*4æÿ’Û
+		// 1
+				sx, 0, 0, 0,
+				// 2
+				0, sy, 0, 0,
+				// 3
+				0, 0, sz, 0,
+				// 4
+				0, 0, 0, 1 };
+		return scaleMatrix;
+	}
 }
