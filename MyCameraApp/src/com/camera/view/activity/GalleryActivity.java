@@ -1,4 +1,4 @@
-package com.camera.activity;
+package com.camera.view.activity;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

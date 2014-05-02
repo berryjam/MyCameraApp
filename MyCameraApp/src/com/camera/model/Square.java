@@ -20,7 +20,7 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
-import com.camera.control.MyGLRenderer;
+import com.camera.control.renderer.MyGLRenderer;
 
 import android.opengl.GLES20;
 

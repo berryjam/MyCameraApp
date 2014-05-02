@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.camera.control;
+package com.camera.control.renderer;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -54,8 +54,12 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 	private final float[] mViewMatrix = new float[16];
 	private final float[] mRotationMatrix = new float[16];
 
+	private float[] scaleMatrix = new float[16];
+
 	private float mAngle;
 	private String modelPath;
+
+	private float scaleRatio = 1.0f;
 
 	private float minX = Float.MAX_VALUE;
 	private float maxX = Float.MIN_VALUE;
@@ -76,6 +80,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 		try {
 			parse();
+			scaleMatrix = getScaleMatrix();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -125,6 +130,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 		// Note that the mMVPMatrix factor *must be first* in order
 		// for the matrix multiplication product to be correct.
 		Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mRotationMatrix, 0);
+
+		Matrix.scaleM(scratch, 0, scaleRatio, scaleRatio, scaleRatio);
 
 		// Draw triangle
 		// mTriangle.draw(scratch);

@@ -1,4 +1,4 @@
-package com.camera.control;
+package com.camera.control.detector;
 
 import java.util.ArrayList;
 import java.util.Iterator;

@@ -1,4 +1,4 @@
-package com.camera.activity;
+package com.camera.view.activity;
 
 import java.io.File;
 import java.text.SimpleDateFormat;

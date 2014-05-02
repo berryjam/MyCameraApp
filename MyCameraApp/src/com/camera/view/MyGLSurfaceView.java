@@ -22,7 +22,7 @@ import android.os.Environment;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-import com.camera.control.MyGLRenderer;
+import com.camera.control.renderer.MyGLRenderer;
 
 /**
  * A view container where OpenGL ES graphics can be drawn on screen. This view
@@ -49,7 +49,6 @@ public class MyGLSurfaceView extends GLSurfaceView {
 		mRenderer = new MyGLRenderer();
 		mRenderer.setModelPath(Environment.getExternalStorageDirectory()
 				.toString() + "/Pictures/MyCameraApp/heartcenter.stl");
-
 		setRenderer(mRenderer);
 		// setRenderer(renderer);
 
@@ -84,6 +83,9 @@ public class MyGLSurfaceView extends GLSurfaceView {
 	private final float TOUCH_SCALE_FACTOR = 180.0f / 320;
 	private float mPreviousX;
 	private float mPreviousY;
+
+	private boolean translateFlag = false;
+	private boolean scaleFlag = false;
 
 	@Override
 	public boolean onTouchEvent(MotionEvent e) {

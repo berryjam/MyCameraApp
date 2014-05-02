@@ -1,4 +1,4 @@
-package com.camera.control;
+package com.camera.control.renderer;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

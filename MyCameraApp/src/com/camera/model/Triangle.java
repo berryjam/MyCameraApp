@@ -21,7 +21,7 @@ import java.nio.FloatBuffer;
 
 import android.opengl.GLES20;
 
-import com.camera.control.MyGLRenderer;
+import com.camera.control.renderer.MyGLRenderer;
 
 /**
  * A two-dimensional triangle for use as a drawn object in OpenGL ES 2.0.

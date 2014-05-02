@@ -1,4 +1,4 @@
-package com.camera.activity;
+package com.camera.view.activity;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -20,6 +20,8 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.camera.control.renderer.MyGLRenderer;
+import com.camera.view.MyGLSurfaceView;
 import com.example.test.R;
 
 public class MainActivity extends Activity {
@@ -38,6 +40,7 @@ public class MainActivity extends Activity {
 	private ImageView scale;
 	private ImageView threeDiemension;
 	private ImageView background;
+	private MyGLSurfaceView myGLSurfaceView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -134,13 +137,14 @@ public class MainActivity extends Activity {
 			}
 		});
 		background = (ImageView) findViewById(R.id.background);
+		myGLSurfaceView = (MyGLSurfaceView) findViewById(R.id.view3d);
 	}
 
 	private static Uri getOutputMediaFileUri(int type) {
 		return Uri.fromFile(getOutputMediaFile(type));
 	}
 
-	private static File getOutputMediaFile(int type) { 
+	private static File getOutputMediaFile(int type) {
 		File mediaStorageDir = new File(
 				Environment
 						.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
