@@ -57,7 +57,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
 	}
 
 	public MyGLSurfaceView(Context context, AttributeSet attrs) {
-		super(context);
+		super(context, attrs);
 
 		// Create an OpenGL ES 2.0 context.
 		setEGLContextClientVersion(2);
@@ -86,6 +86,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
 	private boolean translateFlag = false;
 	private boolean scaleFlag = false;
+	private boolean rotateFlag = false;
 
 	@Override
 	public boolean onTouchEvent(MotionEvent e) {
@@ -98,22 +99,23 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
 		switch (e.getAction()) {
 		case MotionEvent.ACTION_MOVE:
+			if (rotateFlag) {
+				float dx = x - mPreviousX;
+				float dy = y - mPreviousY;
 
-			float dx = x - mPreviousX;
-			float dy = y - mPreviousY;
+				// reverse direction of rotation above the mid-line
+				if (y > getHeight() / 2) {
+					dx = dx * -1;
+				}
 
-			// reverse direction of rotation above the mid-line
-			if (y > getHeight() / 2) {
-				dx = dx * -1;
+				// reverse direction of rotation to left of the mid-line
+				if (x < getWidth() / 2) {
+					dy = dy * -1;
+				}
+
+				mRenderer.setAngle(mRenderer.getAngle()
+						+ ((dx + dy) * TOUCH_SCALE_FACTOR)); // = 180.0f / 320
 			}
-
-			// reverse direction of rotation to left of the mid-line
-			if (x < getWidth() / 2) {
-				dy = dy * -1;
-			}
-
-			mRenderer.setAngle(mRenderer.getAngle()
-					+ ((dx + dy) * TOUCH_SCALE_FACTOR)); // = 180.0f / 320
 			requestRender();
 		}
 
@@ -122,4 +124,48 @@ public class MyGLSurfaceView extends GLSurfaceView {
 		return true;
 	}
 
+	// 交替设置平移标识
+	public void setTranslateFlag() {
+		if (translateFlag)
+			translateFlag = false;
+		else {
+			translateFlag = true;
+			scaleFlag = false;
+			rotateFlag = false;
+		}
+	}
+
+	// 交替设置放缩标识
+	public void setScaleFlag() {
+		if (scaleFlag)
+			scaleFlag = false;
+		else {
+			scaleFlag = true;
+			translateFlag = false;
+			rotateFlag = false;
+		}
+	}
+
+	// 交替设置旋转标识
+	public void setRotateFlag() {
+		if (rotateFlag)
+			rotateFlag = false;
+		else {
+			rotateFlag = true;
+			translateFlag = false;
+			scaleFlag = false;
+		}
+	}
+
+	public boolean getTranslateFlag() {
+		return this.translateFlag;
+	}
+
+	public boolean getScaleFlag() {
+		return this.scaleFlag;
+	}
+
+	public boolean getRotateFlag() {
+		return this.rotateFlag;
+	}
 }

@@ -20,7 +20,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.camera.control.renderer.MyGLRenderer;
 import com.camera.view.MyGLSurfaceView;
 import com.example.test.R;
 
@@ -49,6 +48,7 @@ public class MainActivity extends Activity {
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.main_layout);
+		myGLSurfaceView = (MyGLSurfaceView) findViewById(R.id.view3d);
 		camer = (ImageView) findViewById(R.id.camer);
 		camer.setOnClickListener(new OnClickListener() {
 
@@ -90,7 +90,7 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
-				// FIXME 加载模型，而不是hard-code
+				// FIXME 加载obj模型，并且不能hard-code
 				Intent intent = new Intent(MainActivity.this,
 						OpenGLES20Activity.class);
 				startActivity(intent);
@@ -103,7 +103,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				// TODO 平移
-
+				myGLSurfaceView.setTranslateFlag();
 			}
 		});
 
@@ -113,7 +113,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				// TODO 旋转
-
+				myGLSurfaceView.setRotateFlag();
 			}
 		});
 
@@ -123,7 +123,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				// TODO 缩放
-
+				myGLSurfaceView.setScaleFlag();
 			}
 		});
 
@@ -137,7 +137,6 @@ public class MainActivity extends Activity {
 			}
 		});
 		background = (ImageView) findViewById(R.id.background);
-		myGLSurfaceView = (MyGLSurfaceView) findViewById(R.id.view3d);
 	}
 
 	private static Uri getOutputMediaFileUri(int type) {

@@ -12,6 +12,7 @@
         android:layout_weight="8" >
 
         <com.camera.view.MyGLSurfaceView
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/view3d"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />
