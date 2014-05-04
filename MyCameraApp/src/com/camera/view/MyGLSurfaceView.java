@@ -154,6 +154,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
 																// 320
 			}
 			if (translateFlag) {
+				//FIXME 平移操作有问题，需要认真设计
 				float dx = x - mPreviousX;
 				float dy = y - mPreviousY;
 				mRenderer.setTranslate(dx, dy);
