@@ -92,7 +92,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
 	private int mode;
 
-	float previousDistance;
+	private float previousDistance;
 
 	@Override
 	public boolean onTouchEvent(MotionEvent e) {
@@ -114,11 +114,24 @@ public class MyGLSurfaceView extends GLSurfaceView {
 			break;
 		case MotionEvent.ACTION_POINTER_UP:
 			mode -= 1;
+			if (scaleFlag) {
+				if (mode == 1) {
+					float newDistance = spacing(e);
+					if (newDistance > previousDistance + 1
+							|| newDistance < previousDistance - 1) {
+						float scaleRatio = newDistance / previousDistance;
+						mRenderer.setScaleRatio(scaleRatio);
+						previousDistance = newDistance;
+						Log.v(TAG, "scaleRatio:" + scaleRatio);
+					}
+				}
+			}
 			Log.v(TAG, "MotionEvent.ACTION_POINTER_UP" + " mode:" + mode);
 			break;
 		case MotionEvent.ACTION_POINTER_DOWN:
-			previousDistance = spacing(e);
 			mode += 1;
+			if (mode == 2)
+				previousDistance = spacing(e);
 			Log.v(TAG, "MotionEvent.ACTION_POINTER_DOWN" + " mode:" + mode);
 			break;
 		case MotionEvent.ACTION_MOVE:
@@ -141,25 +154,15 @@ public class MyGLSurfaceView extends GLSurfaceView {
 																// 320
 			}
 			if (translateFlag) {
-
+				float dx = x - mPreviousX;
+				float dy = y - mPreviousY;
+				mRenderer.setTranslate(dx, dy);
+				Log.v(TAG, "mRenderer.setTranslate(" + dx + "," + dy + ");");
 			}
-			if (scaleFlag) {
-				if (mode >= 2) {
-					float newDistance = spacing(e);
-					float scaleRatio;
-					if (previousDistance == 0) {
-						scaleRatio = 1.0f;
-					} else {
-						scaleRatio = newDistance / previousDistance;
-					}
-					mRenderer.setScaleRatio(scaleRatio);
-					previousDistance = newDistance;
-				}
-			}
-			requestRender();
 			Log.v(TAG, "MotionEvent.ACTION_MOVE" + " mode:" + mode);
 			break;
 		}
+		requestRender();
 		mPreviousX = x;
 		mPreviousY = y;
 		return true;

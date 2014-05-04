@@ -69,6 +69,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 	private float maxZ = Float.MIN_VALUE;
 	private boolean initialized = false;
 
+	private float translateX;
+	private float translateY;
+	private float translateZ;
+
 	@Override
 	public void onSurfaceCreated(GL10 unused, EGLConfig config) {
 
@@ -113,6 +117,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 		// Calculate the projection and view transformation
 		Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 
+		Matrix.translateM(mMVPMatrix, 0, translateX, translateY, translateZ);
+
 		// Draw square
 		// mSquare.draw(mMVPMatrix);
 
@@ -131,6 +137,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 		Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mRotationMatrix, 0);
 
 		Matrix.scaleM(scratch, 0, scaleRatio, scaleRatio, scaleRatio);
+
 		// Draw triangle
 		// mTriangle.draw(scratch);
 
@@ -223,6 +230,15 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 	 */
 	public void setScaleRatio(float ratio) {
 		scaleRatio = ratio;
+	}
+
+	/**
+	 * Sets the translate position of the triangle shape(mTriangle).
+	 */
+	public void setTranslate(float x, float y) {
+		translateX = x;
+		translateY = y;
+		translateZ = 0;
 	}
 
 	public void setModelPath(String path) {
