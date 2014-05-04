@@ -20,6 +20,7 @@ import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
 import android.os.Environment;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import com.camera.control.renderer.MyGLRenderer;
@@ -30,6 +31,7 @@ import com.camera.control.renderer.MyGLRenderer;
  * drawn objects.
  */
 public class MyGLSurfaceView extends GLSurfaceView {
+	private static final String TAG = "MyGLSurfaceView";
 
 	private final MyGLRenderer mRenderer;
 
@@ -88,6 +90,10 @@ public class MyGLSurfaceView extends GLSurfaceView {
 	private boolean scaleFlag = false;
 	private boolean rotateFlag = false;
 
+	private int mode;
+
+	float previousDistance;
+
 	@Override
 	public boolean onTouchEvent(MotionEvent e) {
 		// MotionEvent reports input details from the touch screen
@@ -97,7 +103,24 @@ public class MyGLSurfaceView extends GLSurfaceView {
 		float x = e.getX();
 		float y = e.getY();
 
-		switch (e.getAction()) {
+		switch (e.getAction() & MotionEvent.ACTION_MASK) {
+		case MotionEvent.ACTION_DOWN:
+			mode = 1;
+			Log.v(TAG, "MotionEvent.ACTION_DOWN" + " mode:" + mode);
+			break;
+		case MotionEvent.ACTION_UP:
+			mode = 0;
+			Log.v(TAG, "MotionEvent.ACTION_UP" + " mode:" + mode);
+			break;
+		case MotionEvent.ACTION_POINTER_UP:
+			mode -= 1;
+			Log.v(TAG, "MotionEvent.ACTION_POINTER_UP" + " mode:" + mode);
+			break;
+		case MotionEvent.ACTION_POINTER_DOWN:
+			previousDistance = spacing(e);
+			mode += 1;
+			Log.v(TAG, "MotionEvent.ACTION_POINTER_DOWN" + " mode:" + mode);
+			break;
 		case MotionEvent.ACTION_MOVE:
 			if (rotateFlag) {
 				float dx = x - mPreviousX;
@@ -114,11 +137,29 @@ public class MyGLSurfaceView extends GLSurfaceView {
 				}
 
 				mRenderer.setAngle(mRenderer.getAngle()
-						+ ((dx + dy) * TOUCH_SCALE_FACTOR)); // = 180.0f / 320
+						+ ((dx + dy) * TOUCH_SCALE_FACTOR)); // = 180.0f /
+																// 320
+			}
+			if (translateFlag) {
+
+			}
+			if (scaleFlag) {
+				if (mode >= 2) {
+					float newDistance = spacing(e);
+					float scaleRatio;
+					if (previousDistance == 0) {
+						scaleRatio = 1.0f;
+					} else {
+						scaleRatio = newDistance / previousDistance;
+					}
+					mRenderer.setScaleRatio(scaleRatio);
+					previousDistance = newDistance;
+				}
 			}
 			requestRender();
+			Log.v(TAG, "MotionEvent.ACTION_MOVE" + " mode:" + mode);
+			break;
 		}
-
 		mPreviousX = x;
 		mPreviousY = y;
 		return true;
@@ -167,5 +208,11 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
 	public boolean getRotateFlag() {
 		return this.rotateFlag;
+	}
+
+	private float spacing(MotionEvent event) {
+		float x = event.getX(0) - event.getX(1);
+		float y = event.getY(0) - event.getY(1);
+		return (float) Math.sqrt(x * x + y * y);
 	}
 }

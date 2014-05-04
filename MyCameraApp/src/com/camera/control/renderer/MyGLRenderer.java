@@ -54,7 +54,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 	private final float[] mViewMatrix = new float[16];
 	private final float[] mRotationMatrix = new float[16];
 
-	private float[] scaleMatrix = new float[16];
+	private float[] scaleMatrix;
 
 	private float mAngle;
 	private String modelPath;
@@ -80,7 +80,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 		try {
 			parse();
-			scaleMatrix = getScaleMatrix();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -132,7 +131,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 		Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mRotationMatrix, 0);
 
 		Matrix.scaleM(scratch, 0, scaleRatio, scaleRatio, scaleRatio);
-
 		// Draw triangle
 		// mTriangle.draw(scratch);
 
@@ -220,6 +218,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 		mAngle = angle;
 	}
 
+	/**
+	 * Sets the scale ratio of the triangle shape (mTriangle).
+	 */
+	public void setScaleRatio(float ratio) {
+		scaleRatio = ratio;
+	}
+
 	public void setModelPath(String path) {
 		modelPath = path;
 	}
@@ -264,6 +269,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 								minZ = currentVal;
 								maxZ = currentVal;
 							}
+							initialized = true;
 						} else {
 							if (j % 3 == 1) {
 								if (minX > currentVal)
@@ -293,11 +299,11 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 			if (line.startsWith("endloop") || line.startsWith("endfacet"))
 				continue;
 		}
+		getScaleMatrix();
 		input.close();
 	}
 
-	private float[] getScaleMatrix() {
-		float[] scaleMatrix;
+	private void getScaleMatrix() {
 		float sx = 1.0f, sy = 1.0f, sz = 1.0f;
 		float absX = Math.abs(minX) > Math.abs(maxX) ? Math.abs(minX) : Math
 				.abs(maxX);
@@ -316,7 +322,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 			sy = ratio;
 			sz = ratio;
 		}
-		scaleMatrix = new float[] {// 4*4æÿ’Û
+		this.scaleMatrix = new float[] {// 4*4æÿ’Û
 		// 1
 				sx, 0, 0, 0,
 				// 2
@@ -325,6 +331,5 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 				0, 0, sz, 0,
 				// 4
 				0, 0, 0, 1 };
-		return scaleMatrix;
 	}
 }
