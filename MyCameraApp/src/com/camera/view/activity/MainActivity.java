@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -20,6 +21,8 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.camera.utils.ScreenShot;
+import com.camera.utils.Util;
 import com.camera.view.MyGLSurfaceView;
 import com.example.test.R;
 
@@ -41,6 +44,12 @@ public class MainActivity extends Activity {
 	private ImageView background;
 	private MyGLSurfaceView myGLSurfaceView;
 
+	public static boolean capture = false;
+	public static int w;
+	public static int h;
+	public static Bitmap captureBmp;
+	private Display display;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -48,6 +57,9 @@ public class MainActivity extends Activity {
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.main_layout);
+		display = getWindowManager().getDefaultDisplay();
+		w = display.getWidth();
+		h = display.getHeight();
 		myGLSurfaceView = (MyGLSurfaceView) findViewById(R.id.view3d);
 		camer = (ImageView) findViewById(R.id.camer);
 		camer.setOnClickListener(new OnClickListener() {
@@ -90,7 +102,7 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
-				// FIXME 加载obj模型，并且不能hard-code
+				// FIXME 要根据用户选择加载obj模型
 				Intent intent = new Intent(MainActivity.this,
 						OpenGLES20Activity.class);
 				startActivity(intent);
@@ -102,7 +114,6 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
-				// TODO 平移
 				myGLSurfaceView.setTranslateFlag();
 			}
 		});
@@ -112,7 +123,6 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
-				// TODO 旋转
 				myGLSurfaceView.setRotateFlag();
 			}
 		});
@@ -122,7 +132,6 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
-				// TODO 缩放
 				myGLSurfaceView.setScaleFlag();
 			}
 		});
@@ -132,8 +141,11 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
-				// TODO 生成三维图片
-
+				// FIXME GLSurfaceView没有生成
+				capture = true;
+				if (captureBmp != null) {
+					ScreenShot.savePic(captureBmp, new File(Util.getSavePath()));
+				}
 			}
 		});
 		background = (ImageView) findViewById(R.id.background);
@@ -212,5 +224,4 @@ public class MainActivity extends Activity {
 			}
 		}
 	}
-
 }
