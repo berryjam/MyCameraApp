@@ -29,6 +29,10 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
@@ -150,7 +154,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 		for (Triangle triangle : triangles)
 			triangle.draw(scratch);
 
-		if (MainActivity.capture) { 
+		if (MainActivity.capture) {
 			int width = MainActivity.w;
 			int height = MainActivity.h;
 			int screenshotSize = width * height;

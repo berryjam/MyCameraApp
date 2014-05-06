@@ -8,6 +8,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Bitmap.Config;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -58,9 +62,8 @@ public class MainActivity extends Activity {
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.main_layout);
 		display = getWindowManager().getDefaultDisplay();
-		w = display.getWidth();
-		h = display.getHeight();
 		myGLSurfaceView = (MyGLSurfaceView) findViewById(R.id.view3d);
+		background = (ImageView) findViewById(R.id.background);
 		camer = (ImageView) findViewById(R.id.camer);
 		camer.setOnClickListener(new OnClickListener() {
 
@@ -141,14 +144,18 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
-				// FIXME GLSurfaceView没有生成
+				// FIXME 功能没正确实现
 				capture = true;
 				if (captureBmp != null) {
+					Bitmap bg = ((BitmapDrawable) background.getDrawable())
+							.getBitmap();
+					// ScreenShot.savePic(Util.toConformBitmap(bg, captureBmp),
+					// new File(Util.getSavePath()));
+					// ScreenShot.savePic(bg, new File(Util.getSavePath()));
 					ScreenShot.savePic(captureBmp, new File(Util.getSavePath()));
 				}
 			}
 		});
-		background = (ImageView) findViewById(R.id.background);
 	}
 
 	private static Uri getOutputMediaFileUri(int type) {
@@ -221,6 +228,10 @@ public class MainActivity extends Activity {
 						LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 				// Toast.makeText(this, imagePath, Toast.LENGTH_LONG).show();
 				background.invalidate();
+				w = ((BitmapDrawable) background.getDrawable()).getBitmap()
+						.getWidth();
+				h = ((BitmapDrawable) background.getDrawable()).getBitmap()
+						.getHeight();
 			}
 		}
 	}
